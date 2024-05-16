@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Compatible with OpenZeppelin Contracts ^5.0.0
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -8,24 +8,17 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract ProtoNFT is
-    ERC721,
-    ERC721Enumerable,
-    ERC721URIStorage,
-    ERC721Burnable
-{
+contract ProtoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable {
     uint256 private _nextTokenId;
     uint private _tokenIdCounter;
 
-    constructor() ERC721("ProtoNFT", "PNFT") {
-
-    }    
+    constructor() ERC721("ProtoNFT", "PNFT") { }
 
     function mint() public {
         _tokenIdCounter++;
         uint256 tokenId = _tokenIdCounter;
         _safeMint(msg.sender, tokenId);
-        _setTokenURI(tokenId, tokenURI(tokenId));
+        _setTokenURI(tokenId, Strings.toString(tokenId));
     }
 
     function safeMint(address to, string memory uri) public {
@@ -54,7 +47,7 @@ contract ProtoNFT is
         super._increaseBalance(account, value);
     }
 
-    function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
+    function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {        
         return string.concat(super.tokenURI(tokenId), ".json");
     }
 
